@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Website Name - Ads Display</title>
+  <style>
+    /* Reset and base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      background: #f9f9f9;
+      color: #222;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a {
+      color: #0073e6;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    a:hover,
+    a:focus {
+      text-decoration: underline;
+    }
+
+    /* Layout */
+    header,
+    footer {
+      background: #fff;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 1px 4px rgb(0 0 0 / 0.1);
+      position: relative;
+      z-index: 10;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      background: #fff;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    nav {
+      margin-top: 0.5rem;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    nav a {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    main {
+      flex: 1 0 auto;
+      display: flex;
+      max-width: 1200px;
+      margin: 1rem auto;
+      padding: 0 1rem;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    /* Banner ad - sticky top */
+    .banner-ad {
+      position: sticky;
+      top: 3.5rem; /* below header */
+      background: #e0e7ff;
+      border: 2px solid #4f46e5;
+      border-radius: 6px;
+      text-align: center;
+      padding: 0.75rem 1rem;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #3730a3;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease;
+      z-index: 9;
+      max-width: 100%;
+      margin: 0 auto 1rem auto;
+      display: block;
+      box-shadow: 0 2px 6px rgb(79 70 229 / 0.3);
+    }
+    .banner-ad:hover,
+    .banner-ad:focus {
+      background-color: #c7d2fe;
+      outline: none;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      flex: 0 0 280px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 1rem;
+      position: sticky;
+      top: 5.5rem; /* below header + banner */
+      height: fit-content;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.05);
+    }
+    .sidebar h2 {
+      font-size: 1.25rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #4f46e5;
+      padding-bottom: 0.25rem;
+      color: #4f46e5;
+    }
+    .sidebar a.ad-link {
+      display: block;
+      margin-bottom: 1rem;
+      border: 1px solid #bbb;
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+      background: #fafafa;
+      text-align: center;
+      padding: 0.25rem;
+    }
+    .sidebar a.ad-link:hover,
+    .sidebar a.ad-link:focus {
+      box-shadow: 0 0 8px #4f46e5;
+      outline: none;
+      background: #f0f4ff;
+    }
+    .sidebar a.ad-link img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Main content */
+    .content {
+      flex: 1 1 auto;
+      background: #fff;
+      border-radius: 6px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.05);
+      min-width: 0;
+    }
+    .content h2 {
+      margin-top: 0;
+      color: #333;
+      font-weight: 700;
+      border-bottom: 2px solid #4f46e5;
+      padding-bottom: 0.25rem;
+      margin-bottom: 1rem;
+    }
+    .content p {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      color: #444;
+    }
+
+    /* In-content ads */
+    .in-content-ad {
+      display: block;
+      margin: 1.5rem auto;
+      max-width: 100%;
+      border: 2px solid #4f46e5;
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      background: #e0e7ff;
+      color: #3730a3;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 6px rgb(79 70 229 / 0.3);
+    }
+    .in-content-ad:hover,
+    .in-content-ad:focus {
+      background-color: #c7d2fe;
+      outline: none;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      padding: 1rem 1.5rem;
+      background: #fff;
+      box-shadow: 0 -1px 4px rgb(0 0 0 / 0.05);
+      flex-shrink: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      main {
+        flex-direction: column;
+        padding: 0 1rem;
+      }
+      .sidebar {
+        position: relative;
+        top: auto;
+        flex: none;
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+      .content {
+        width: 100%;
+      }
+      .banner-ad {
+        top: 3.5rem;
+      }
+    }
+    @media (max-width: 480px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .banner-ad {
+        font-size: 1rem;
+        padding: 0.5rem 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Your Website Name</h1>
+    <nav aria-label="Primary navigation">
+      <ul>
+        <li><a href="index.html" aria-current="page">Home</a></li>
+        <li><a href="ads.html">Ad Categories</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Banner Ad (sticky top) -->
+  <a
+    href="https://example.com/banner-ad"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="banner-ad"
+    role="banner"
+    aria-label="Top banner advertisement"
+    data-ad-type="banner"
+    >Top Banner Ad - Click Here!</a
+  >
+
+  <main>
+    <section class="content" aria-label="Main content with in-content ads">
+      <h2>Welcome to Your Website Name</h2>
+      <p>
+        This website is dedicated to displaying various advertisements in a
+        clean and user-friendly layout. Below you will find ads integrated
+        seamlessly within the content.
+      </p>
+
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+        vehicula, justo at convallis cursus, urna lorem dapibus lorem, nec
+        efficitur lorem urna nec sapien.
+      </p>
+
+      <!-- In-content ad -->
+      <a
+        href="https://example.com/in-content-ad1"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="in-content-ad"
+        role="region"
+        aria-label="In-content advertisement"
+        data-ad-type="in-content"
+        >In-Content Ad - Learn More</a
+      >
+
+      <p>
+        Praesent euismod, sapien nec pulvinar cursus, elit erat dapibus
+        sapien, a tincidunt lorem elit at magna. Integer at magna nec nulla
+        convallis dignissim.
+      </p>
+
+      <p>
+        Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+        accusantium doloremque laudantium, totam rem aperiam.
+      </p>
+
+      <!-- Another in-content ad -->
+      <a
+        href="https://example.com/in-content-ad2"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="in-content-ad"
+        role="region"
+        aria-label="In-content advertisement"
+        data-ad-type="in-content"
+        >Another In-Content Ad - Click Here</a
+      >
+    </section>
+
+    <aside class="sidebar" aria-label="Sidebar advertisements">
+      <h2>Sidebar Ads</h2>
+
+      <a
+        href="https://example.com/sidebar-ad1"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="ad-link"
+        aria-label="Sidebar advertisement 1"
+        data-ad-type="sidebar"
+      >
+        <img
+          src="https://via.placeholder.com/250x250?text=Sidebar+Ad+1"
+          alt="Sidebar Ad 1"
+          loading="lazy"
+        />
+      </a>
+
+      <a
+        href="https://example.com/sidebar-ad2"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="ad-link"
+        aria-label="Sidebar advertisement 2"
+        data-ad-type="sidebar"
+      >
+        <img
+          src="https://via.placeholder.com/250x250?text=Sidebar+Ad+2"
+          alt="Sidebar Ad 2"
+          loading="lazy"
+        />
+      </a>
+
+      <a
+        href="https://example.com/sidebar-ad3"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="ad-link"
+        aria-label="Sidebar advertisement 3"
+        data-ad-type="sidebar"
+      >
+        <img
+          src="https://via.placeholder.com/250x250?text=Sidebar+Ad+3"
+          alt="Sidebar Ad 3"
+          loading="lazy"
+        />
+      </a>
+    </aside>
+  </main>
+
+  <footer>
+    © 2025 Your Website Name
+  </footer>
+
+  <script>
+    // Optional: Analytics placeholder for ad clicks
+    // This script listens for clicks on ads and logs them to console.
+    // Replace with real analytics integration as needed.
+
+    document.body.addEventListener("click", (event) => {
+      const ad = event.target.closest("[data-ad-type]");
+      if (ad) {
+        const adType = ad.getAttribute("data-ad-type");
+        const href = ad.getAttribute("href") || "";
+        console.log(
+          `Ad clicked: Type=${adType}, URL=${href}, Timestamp=${new Date().toISOString()}`
+        );
+        // Example: send data to analytics endpoint here
+        // fetch('/analytics/ad-click', { method: 'POST', body: JSON.stringify({ adType, href, timestamp: new Date().toISOString() }) });
+      }
+    });
+  </script>
+</body>
+</html>
